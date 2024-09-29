@@ -163,7 +163,6 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
         //calliong this emit is redundant because in the VRFCoordinatorV2_5Mock calling an Event for RequestID as well
         emit RequestedRaffleWinner(requestId);
-
     }
 
     //CEI : Checks, Effects, Interactions Pattern
@@ -204,7 +203,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
         return s_players[indexOfPlayer];
     }
 
-    function getLastTimeStamp() external view returns(uint256) {
+    function getLastTimeStamp() external view returns (uint256) {
         return s_lastTimeStamp;
     }
 

@@ -10,7 +10,6 @@ import {Vm} from "forge-std/Vm.sol";
 import {VRFCoordinatorV2_5Mock} from
     "lib/chainlink-brownie-contracts/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
 
-
 contract RaffleTest is CodeConstants, Test {
     Raffle public raffle;
     HelperConfig public helperConfig;
@@ -215,7 +214,7 @@ contract RaffleTest is CodeConstants, Test {
     //use this function
     function testPerformUpkeepUpdatesRaffleStateAndEmitsRequestId() public raffleEntered {
         //Act
-        //read the Logs 
+        //read the Logs
         vm.recordLogs();
         raffle.performUpkeep("");
         Vm.Log[] memory entries = vm.getRecordedLogs();
@@ -228,7 +227,7 @@ contract RaffleTest is CodeConstants, Test {
     }
 
     /* FULLFILL RANDOM WORDS */
-    modifier skipFork{
+    modifier skipFork() {
         if (block.chainid != LOCAL_CHAIN_ID) {
             return;
         }
@@ -236,6 +235,7 @@ contract RaffleTest is CodeConstants, Test {
     }
     //function below using fuzz to test (default is 256 times test with random number)
     //can change in foundry.toml
+
     function testFulFillRandomWordsCanOnlyBeCalledAfterPerformUpKeep(uint256 randomRequestId) public raffleEntered {
         //Arrange / Act / Assert
         vm.expectRevert(VRFCoordinatorV2_5Mock.InvalidRequest.selector);
@@ -243,12 +243,12 @@ contract RaffleTest is CodeConstants, Test {
     }
 
     function testFulfillRandoWordsPicksAWinnerResetsAndSendMoney() public raffleEntered skipFork {
-        //Arrange 
-        uint256 additionalEntrants = 3; //4 People total 
+        //Arrange
+        uint256 additionalEntrants = 3; //4 People total
         uint256 startingIndex = 1;
         address expectedWinner = address(1);
 
-        for (uint256 i = startingIndex; i<startingIndex + additionalEntrants; i++) {
+        for (uint256 i = startingIndex; i < startingIndex + additionalEntrants; i++) {
             address newPlayer = address(uint160(i)); // address(i) 1/2/3//4../etc
             //HOAX IS function is to sets up a prank from an address that has some ether
             hoax(newPlayer, 1 ether);
@@ -258,8 +258,8 @@ contract RaffleTest is CodeConstants, Test {
         uint256 startingTimeStamp = raffle.getLastTimeStamp();
         uint256 winnerStartingBalance = expectedWinner.balance;
 
-        //act 
-        //read the Logs 
+        //act
+        //read the Logs
         vm.recordLogs();
         raffle.performUpkeep("");
         Vm.Log[] memory entries = vm.getRecordedLogs();

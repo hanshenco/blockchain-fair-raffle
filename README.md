@@ -1,3 +1,12 @@
+# About 
+```shell
+Hanshen.co
+```
+
+## Quickstart
+```shell
+git clone hanshenco/blockchain-fair-raffle smart-contract-lottery
+```
 
 ## Foundry
 
